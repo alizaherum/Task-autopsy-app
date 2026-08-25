@@ -16,11 +16,30 @@ no clear first step," which is more actionable than a plain to-do streak counter
   triggers, average delay, and per-tag patterns like "you stall most on 'admin' tasks
   due to boredom."
 
-Data is stored locally in the browser (`localStorage`) — no backend or account needed.
+Sign in with an account and your tasks sync across every device, backed by Supabase
+(Postgres + Auth, with Row Level Security so each account only ever sees its own data).
 
 ## Stack
 
-React + TypeScript + Vite + Tailwind CSS.
+React + TypeScript + Vite + Tailwind CSS, [Supabase](https://supabase.com) for auth and
+data sync (Postgres + Realtime).
+
+## Setup
+
+1. Create a free project at [supabase.com](https://supabase.com).
+2. In the project's SQL editor, run [`supabase/schema.sql`](./supabase/schema.sql) — it
+   creates the `tasks` table, Row Level Security policies scoping each row to its owner,
+   and enables Realtime so changes sync live across devices.
+3. Copy `.env.example` to `.env` and fill in your project's URL and anon key (Project
+   Settings → API in the Supabase dashboard):
+   ```bash
+   cp .env.example .env
+   ```
+4. By default Supabase requires email confirmation for new sign-ups (Authentication →
+   Providers → Email in the dashboard, if you want to disable that for local testing).
+
+Without a configured `.env`, the app shows a setup screen instead of a broken sign-in
+form.
 
 ## Development
 
