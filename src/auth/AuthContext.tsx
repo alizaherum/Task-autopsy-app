@@ -6,8 +6,7 @@ interface AuthContextValue {
   session: Session | null
   user: User | null
   loading: boolean
-  signInWithPassword: (email: string, password: string) => Promise<{ error: string | null }>
-  signUpWithPassword: (email: string, password: string) => Promise<{ error: string | null }>
+  signInWithEmail: (email: string) => Promise<{ error: string | null }>
   signOut: () => Promise<void>
 }
 
@@ -37,15 +36,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return () => subscription.unsubscribe()
   }, [])
 
-  async function signInWithPassword(email: string, password: string) {
+  async function signInWithEmail(email: string) {
     if (!supabase) return { error: 'Supabase is not configured.' }
-    const { error } = await supabase.auth.signInWithPassword({ email, password })
-    return { error: error?.message ?? null }
-  }
-
-  async function signUpWithPassword(email: string, password: string) {
-    if (!supabase) return { error: 'Supabase is not configured.' }
-    const { error } = await supabase.auth.signUp({ email, password })
+    const { error } = await supabase.auth.signInWithOtp({
+      email,
+      options: { emailRedirectTo: window.location.origin },
+    })
     return { error: error?.message ?? null }
   }
 
@@ -60,8 +56,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         session,
         user: session?.user ?? null,
         loading,
-        signInWithPassword,
-        signUpWithPassword,
+        signInWithEmail,
         signOut,
       }}
     >

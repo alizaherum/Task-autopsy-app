@@ -16,8 +16,9 @@ no clear first step," which is more actionable than a plain to-do streak counter
   triggers, average delay, and per-tag patterns like "you stall most on 'admin' tasks
   due to boredom."
 
-Sign in with an account and your tasks sync across every device, backed by Supabase
-(Postgres + Auth, with Row Level Security so each account only ever sees its own data).
+Sign in with just your email — no password — and your tasks sync across every device,
+backed by Supabase (Postgres + Auth, with Row Level Security so each account only ever
+sees its own data).
 
 It's also an installable PWA — see [Installing on your phone](#installing-on-your-phone)
 below.
@@ -39,8 +40,10 @@ the installable app manifest and service worker.
    ```bash
    cp .env.example .env
    ```
-4. By default Supabase requires email confirmation for new sign-ups (Authentication →
-   Providers → Email in the dashboard, if you want to disable that for local testing).
+4. Sign-in is passwordless (magic link) via Supabase's built-in email OTP — nothing
+   further to configure. In Authentication → URL Configuration, make sure your deployed
+   URL (and `http://localhost:5173` for local dev) is listed under Redirect URLs, or the
+   sign-in link won't be able to complete.
 
 Without a configured `.env`, the app shows a setup screen instead of a broken sign-in
 form.
