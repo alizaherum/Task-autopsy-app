@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react'
+import { TRIGGER_ICONS } from '../lib/triggerIcons'
 import { TRIGGERS, type Reflection, type Task, type Trigger } from '../types'
 
 interface Props {
@@ -34,14 +35,15 @@ export function ReflectionModal({ task, onCancel, onSubmit }: Props) {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4"
+      className="animate-fade-in fixed inset-0 z-50 flex items-end justify-center bg-black/70 sm:items-center sm:p-4"
       onClick={onCancel}
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="w-full max-w-md rounded-xl border border-slate-800 bg-slate-900 p-6 shadow-xl"
+        className="animate-modal-in max-h-[90vh] w-full max-w-md overflow-y-auto rounded-t-3xl border border-white/10 bg-[#141420] p-6 shadow-2xl sm:rounded-3xl"
       >
-        <h2 className="text-lg font-semibold text-slate-100">You finally did it 🎉</h2>
+        <div className="mx-auto mb-4 h-1 w-10 rounded-full bg-white/15 sm:hidden" />
+        <h2 className="text-lg font-bold text-slate-100">You finally did it 🎉</h2>
         <p className="mt-1 text-sm text-slate-400">
           "{task.title}"
           {delayDays > 0 && (
@@ -56,29 +58,40 @@ export function ReflectionModal({ task, onCancel, onSubmit }: Props) {
         <form onSubmit={handleSubmit} className="mt-4">
           <p className="mb-2 text-sm font-medium text-slate-300">What triggered the delay?</p>
           <div className="grid grid-cols-1 gap-2">
-            {TRIGGERS.map((t) => (
-              <label
-                key={t.value}
-                className={`flex cursor-pointer items-start gap-2 rounded-lg border px-3 py-2 text-sm transition-colors ${
-                  trigger === t.value
-                    ? 'border-teal-500 bg-teal-500/10'
-                    : 'border-slate-700 hover:border-slate-500'
-                }`}
-              >
-                <input
-                  type="radio"
-                  name="trigger"
-                  value={t.value}
-                  checked={trigger === t.value}
-                  onChange={() => setTrigger(t.value)}
-                  className="mt-0.5 accent-teal-500"
-                />
-                <span>
-                  <span className="block font-medium text-slate-200">{t.label}</span>
-                  <span className="block text-xs text-slate-500">{t.description}</span>
-                </span>
-              </label>
-            ))}
+            {TRIGGERS.map((t) => {
+              const Icon = TRIGGER_ICONS[t.value]
+              const selected = trigger === t.value
+              return (
+                <label
+                  key={t.value}
+                  className={`flex cursor-pointer items-start gap-3 rounded-xl border px-3 py-2.5 text-sm transition-colors ${
+                    selected
+                      ? 'border-violet-400/50 bg-violet-500/10'
+                      : 'border-white/10 hover:border-white/25'
+                  }`}
+                >
+                  <input
+                    type="radio"
+                    name="trigger"
+                    value={t.value}
+                    checked={selected}
+                    onChange={() => setTrigger(t.value)}
+                    className="sr-only"
+                  />
+                  <span
+                    className={`mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${
+                      selected ? 'bg-violet-500/20 text-violet-300' : 'bg-white/5 text-slate-400'
+                    }`}
+                  >
+                    <Icon className="h-4 w-4" />
+                  </span>
+                  <span>
+                    <span className="block font-medium text-slate-200">{t.label}</span>
+                    <span className="block text-xs text-slate-500">{t.description}</span>
+                  </span>
+                </label>
+              )
+            })}
           </div>
 
           {trigger === 'other' && (
@@ -86,7 +99,7 @@ export function ReflectionModal({ task, onCancel, onSubmit }: Props) {
               value={otherTrigger}
               onChange={(e) => setOtherTrigger(e.target.value)}
               placeholder="What was it?"
-              className="mt-2 w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-slate-100 placeholder-slate-500 outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500"
+              className="mt-2 w-full rounded-xl border border-white/10 bg-black/30 px-3.5 py-2 text-sm text-slate-100 placeholder-slate-500 outline-none focus:border-violet-400/60 focus:ring-2 focus:ring-violet-500/20"
             />
           )}
 
@@ -95,21 +108,21 @@ export function ReflectionModal({ task, onCancel, onSubmit }: Props) {
             onChange={(e) => setNotes(e.target.value)}
             placeholder="Anything else worth remembering? (optional)"
             rows={2}
-            className="mt-3 w-full resize-none rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-slate-100 placeholder-slate-500 outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500"
+            className="mt-3 w-full resize-none rounded-xl border border-white/10 bg-black/30 px-3.5 py-2 text-sm text-slate-100 placeholder-slate-500 outline-none focus:border-violet-400/60 focus:ring-2 focus:ring-violet-500/20"
           />
 
           <div className="mt-4 flex gap-2">
             <button
               type="button"
               onClick={onCancel}
-              className="flex-1 rounded-lg border border-slate-700 px-4 py-2 text-sm font-medium text-slate-300 hover:border-slate-500"
+              className="flex-1 rounded-xl border border-white/10 px-4 py-2.5 text-sm font-medium text-slate-300 transition-colors hover:border-white/25"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={!trigger}
-              className="flex-1 rounded-lg bg-teal-600 px-4 py-2 text-sm font-medium text-white hover:bg-teal-500 disabled:cursor-not-allowed disabled:bg-slate-700 disabled:text-slate-400"
+              className="flex-1 rounded-xl bg-gradient-to-r from-violet-500 to-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-lg shadow-violet-950/40 transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:from-slate-700 disabled:to-slate-700 disabled:text-slate-400 disabled:shadow-none"
             >
               Save reflection
             </button>
