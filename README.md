@@ -19,10 +19,14 @@ no clear first step," which is more actionable than a plain to-do streak counter
 Sign in with an account and your tasks sync across every device, backed by Supabase
 (Postgres + Auth, with Row Level Security so each account only ever sees its own data).
 
+It's also an installable PWA — see [Installing on your phone](#installing-on-your-phone)
+below.
+
 ## Stack
 
 React + TypeScript + Vite + Tailwind CSS, [Supabase](https://supabase.com) for auth and
-data sync (Postgres + Realtime).
+data sync (Postgres + Realtime), [vite-plugin-pwa](https://vite-pwa-org.netlify.app/) for
+the installable app manifest and service worker.
 
 ## Setup
 
@@ -49,3 +53,29 @@ npm run dev      # start dev server
 npm run build    # typecheck + production build
 npm run lint      # oxlint
 ```
+
+## Deploying
+
+`npm run build` outputs a static site in `dist/` — deploy it to any static host. The
+quickest options, both with a generous free tier and zero server to manage:
+
+- **Vercel**: `npx vercel` from the project root (or connect the GitHub repo at
+  [vercel.com/new](https://vercel.com/new) for automatic deploys on push). Add the two
+  `VITE_SUPABASE_*` variables from `.env` under Project Settings → Environment Variables.
+- **Netlify**: `npx netlify deploy --build` (or drag-and-drop the `dist/` folder at
+  [app.netlify.com/drop](https://app.netlify.com/drop) for a one-off). Set the same env
+  vars under Site configuration → Environment variables.
+
+Either way you'll get a real `https://` URL — needed for install prompts and service
+workers to work (they don't run over plain HTTP except on localhost).
+
+## Installing on your phone
+
+Once deployed, the app installs like a native app, no app store needed:
+
+- **iOS (Safari)**: open the URL → Share icon → **Add to Home Screen**.
+- **Android (Chrome)**: open the URL → ⋮ menu → **Install app** (or **Add to Home
+  screen**). Chrome will often prompt automatically after a visit or two.
+
+It then launches full-screen with its own icon, no browser chrome, and works offline for
+already-visited screens (new data still needs a connection to sync via Supabase).

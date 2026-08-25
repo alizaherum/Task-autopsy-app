@@ -1,4 +1,5 @@
 import { TRIGGERS, type Task, type Trigger } from '../types'
+import { TRIGGER_ICONS } from '../lib/triggerIcons'
 
 interface Props {
   tasks: Task[]
@@ -24,7 +25,7 @@ export function PatternInsights({ tasks }: Props) {
 
   if (completed.length === 0) {
     return (
-      <div className="rounded-xl border border-dashed border-slate-800 p-8 text-center text-sm text-slate-500">
+      <div className="rounded-2xl border border-dashed border-slate-700/60 p-8 text-center text-sm text-slate-500">
         No patterns yet. Once you finish a task and reflect on it, your map starts forming here.
       </div>
     )
@@ -65,7 +66,7 @@ export function PatternInsights({ tasks }: Props) {
     completed.reduce((sum, t) => sum + delayDays(t), 0) / completed.length
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-5">
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
         <StatCard label="Tasks autopsied" value={completed.length.toString()} />
         <StatCard
@@ -75,34 +76,38 @@ export function PatternInsights({ tasks }: Props) {
         <StatCard label="Avg. delay" value={`${avgDelay.toFixed(1)}d`} />
       </div>
 
-      <section className="rounded-xl border border-slate-800 bg-slate-900/60 p-5">
-        <h3 className="mb-3 text-sm font-semibold text-slate-200">Delay triggers</h3>
-        <div className="space-y-2.5">
-          {sortedTriggers.map(([trigger, count]) => (
-            <div key={trigger} className="flex items-center gap-3">
-              <span className="w-32 shrink-0 text-sm text-slate-400">
-                {triggerLabel(trigger)}
-              </span>
-              <div className="h-2.5 flex-1 overflow-hidden rounded-full bg-slate-800">
-                <div
-                  className="h-full rounded-full bg-teal-500"
-                  style={{ width: `${(count / maxCount) * 100}%` }}
-                />
+      <section className="rounded-2xl border border-white/10 bg-white/[0.03] p-5">
+        <h3 className="mb-4 text-sm font-semibold text-slate-200">Delay triggers</h3>
+        <div className="space-y-3">
+          {sortedTriggers.map(([trigger, count]) => {
+            const Icon = TRIGGER_ICONS[trigger]
+            return (
+              <div key={trigger} className="flex items-center gap-3">
+                <Icon className="h-4 w-4 shrink-0 text-violet-300" />
+                <span className="w-28 shrink-0 text-sm text-slate-400">
+                  {triggerLabel(trigger)}
+                </span>
+                <div className="h-2.5 flex-1 overflow-hidden rounded-full bg-white/5">
+                  <div
+                    className="h-full rounded-full bg-gradient-to-r from-violet-500 to-indigo-400"
+                    style={{ width: `${(count / maxCount) * 100}%` }}
+                  />
+                </div>
+                <span className="w-5 shrink-0 text-right text-sm text-slate-500">{count}</span>
               </div>
-              <span className="w-6 shrink-0 text-right text-sm text-slate-500">{count}</span>
-            </div>
-          ))}
+            )
+          })}
         </div>
       </section>
 
       {tagInsights.length > 0 && (
-        <section className="rounded-xl border border-slate-800 bg-slate-900/60 p-5">
+        <section className="rounded-2xl border border-white/10 bg-white/[0.03] p-5">
           <h3 className="mb-3 text-sm font-semibold text-slate-200">Personal patterns</h3>
-          <ul className="space-y-2">
+          <ul className="space-y-2.5">
             {tagInsights.map((i) => (
-              <li key={i.tag} className="text-sm text-slate-300">
+              <li key={i.tag} className="text-sm leading-relaxed text-slate-300">
                 You stall most on{' '}
-                <span className="font-medium text-teal-400">"{i.tag}"</span> tasks due to{' '}
+                <span className="font-medium text-violet-300">"{i.tag}"</span> tasks due to{' '}
                 <span className="font-medium text-slate-100">
                   {triggerLabel(i.dominantTrigger)}
                 </span>{' '}
@@ -120,9 +125,9 @@ export function PatternInsights({ tasks }: Props) {
 
 function StatCard({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-xl border border-slate-800 bg-slate-900/60 p-4">
+    <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
       <p className="text-xs text-slate-500">{label}</p>
-      <p className="mt-1 truncate text-lg font-semibold text-slate-100">{value}</p>
+      <p className="mt-1 truncate text-lg font-bold text-slate-100">{value}</p>
     </div>
   )
 }

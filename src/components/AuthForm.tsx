@@ -34,8 +34,8 @@ export function AuthForm() {
   }
 
   return (
-    <div className="mx-auto max-w-sm rounded-xl border border-slate-800 bg-slate-900/60 p-6">
-      <h2 className="text-lg font-semibold text-slate-100">
+    <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-6 shadow-lg shadow-black/20">
+      <h2 className="text-lg font-bold text-slate-100">
         {mode === 'sign-in' ? 'Sign in' : 'Create an account'}
       </h2>
       <p className="mt-1 text-sm text-slate-400">
@@ -54,7 +54,7 @@ export function AuthForm() {
             autoComplete="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-slate-100 outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500"
+            className="w-full rounded-xl border border-white/10 bg-black/30 px-3.5 py-2.5 text-slate-100 outline-none transition-colors focus:border-violet-400/60 focus:ring-2 focus:ring-violet-500/20"
           />
         </div>
 
@@ -70,17 +70,17 @@ export function AuthForm() {
             autoComplete={mode === 'sign-in' ? 'current-password' : 'new-password'}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-slate-100 outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500"
+            className="w-full rounded-xl border border-white/10 bg-black/30 px-3.5 py-2.5 text-slate-100 outline-none transition-colors focus:border-violet-400/60 focus:ring-2 focus:ring-violet-500/20"
           />
         </div>
 
         {error && <p className="text-sm text-red-400">{error}</p>}
-        {info && <p className="text-sm text-teal-400">{info}</p>}
+        {info && <p className="text-sm text-emerald-400">{info}</p>}
 
         <button
           type="submit"
           disabled={submitting}
-          className="w-full rounded-lg bg-teal-600 px-4 py-2 font-medium text-white transition-colors hover:bg-teal-500 disabled:cursor-not-allowed disabled:bg-slate-700 disabled:text-slate-400"
+          className="w-full rounded-xl bg-gradient-to-r from-violet-500 to-indigo-600 px-4 py-2.5 font-semibold text-white shadow-lg shadow-violet-950/40 transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:from-slate-700 disabled:to-slate-700 disabled:text-slate-400 disabled:shadow-none"
         >
           {submitting ? 'Please wait…' : mode === 'sign-in' ? 'Sign in' : 'Sign up'}
         </button>
