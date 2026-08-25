@@ -82,3 +82,10 @@ Once deployed, the app installs like a native app, no app store needed:
 
 It then launches full-screen with its own icon, no browser chrome, and works offline for
 already-visited screens (new data still needs a connection to sync via Supabase).
+
+## App Store (iOS)
+
+The app is also wrapped as a native iOS project via [Capacitor](https://capacitorjs.com)
+(`capacitor.config.ts`, `ios/`) for a real App Store listing, as an alternative to the PWA
+above. This requires a Mac with Xcode and an Apple Developer account — see
+[`docs/ios-app-store.md`](./docs/ios-app-store.md) for the full walkthrough.
