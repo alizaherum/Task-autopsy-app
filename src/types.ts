@@ -1,45 +1,33 @@
-export type Trigger =
-  | 'fear'
-  | 'boredom'
-  | 'unclear-steps'
-  | 'overwhelm'
-  | 'perfectionism'
-  | 'low-energy'
-  | 'other'
+export type CognitiveLoad = 'deep' | 'shallow' | 'admin'
 
-export const TRIGGERS: { value: Trigger; label: string; description: string }[] = [
-  { value: 'fear', label: 'Fear', description: 'Afraid of doing it wrong, being judged, or the outcome' },
-  { value: 'boredom', label: 'Boredom', description: 'Just didn’t feel interesting enough to start' },
-  { value: 'unclear-steps', label: 'Unclear first step', description: 'Didn’t know where or how to begin' },
-  { value: 'overwhelm', label: 'Overwhelm', description: 'Felt too big or complex to tackle' },
-  { value: 'perfectionism', label: 'Perfectionism', description: 'Wanted conditions or a plan to be just right first' },
-  { value: 'low-energy', label: 'Low energy', description: 'Tired, drained, or not in the right headspace' },
-  { value: 'other', label: 'Other', description: 'Something else entirely' },
+export const LOADS: { value: CognitiveLoad; label: string; description: string }[] = [
+  { value: 'deep', label: 'Deep', description: 'Focused, hard-to-interrupt work' },
+  { value: 'shallow', label: 'Shallow', description: 'Easy, low-stakes busywork' },
+  { value: 'admin', label: 'Admin', description: 'Logistics, replies, chores' },
 ]
 
 export interface Task {
   id: string
   title: string
-  notes?: string
-  tags: string[]
+  load: CognitiveLoad
   createdAt: string
   completedAt?: string
-  reflection?: Reflection
+  /** Self-reported 1-5: how well the work session went */
+  focusRating?: number
+  /** Predicted or logged energy level (1-5) at the moment of completion */
+  energyAtCompletion?: number
 }
 
-export interface Reflection {
-  trigger: Trigger
-  otherTrigger?: string
-  notes?: string
-  reflectedAt: string
+export interface EnergyCheckIn {
+  id: string
+  timestamp: string
+  level: number
 }
 
-export const COMMON_TAGS = [
-  'no clear first step',
-  'high stakes',
-  'boring',
-  'creative',
-  'admin',
-  'social',
-  'physical',
+export const ENERGY_LEVELS: { value: number; label: string; emoji: string }[] = [
+  { value: 1, label: 'Running on empty', emoji: '🪫' },
+  { value: 2, label: 'Low', emoji: '😮‍💨' },
+  { value: 3, label: 'Steady', emoji: '🙂' },
+  { value: 4, label: 'Good', emoji: '⚡' },
+  { value: 5, label: 'Sharp', emoji: '🔥' },
 ]

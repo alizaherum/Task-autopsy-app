@@ -2,6 +2,10 @@
 
 :root {
   color-scheme: dark;
+  --load-deep: #3987e5;
+  --load-shallow: #d95926;
+  --load-admin: #199e70;
+  --energy-hue: 59, 135, 229;
 }
 
 body {
