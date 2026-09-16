@@ -68,3 +68,10 @@ environment variables needed:
 
 Because everything lives in `localStorage`, data stays on-device per browser — there's
 no sync across devices without adding a backend.
+
+## iOS app
+
+The web app is also wrapped as a native iOS project via
+[Capacitor](https://capacitorjs.com) (`capacitor.config.ts`, `ios/`), ready to open in
+Xcode and ship to the App Store — see [`docs/ios-app-store.md`](./docs/ios-app-store.md)
+for the full walkthrough (requires a Mac).
